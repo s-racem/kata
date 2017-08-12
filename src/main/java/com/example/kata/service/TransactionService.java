@@ -1,6 +1,8 @@
 package com.example.kata.service;
 
 import com.example.kata.domain.models.Transaction;
+import com.example.kata.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +10,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TransactionService {
+    @Autowired
+    TransactionRepository transactionRepository;
+    
     public Transaction addTransaction(Transaction transaction) {
-        return null;
+        return transactionRepository.save(transaction);
     }
 }
