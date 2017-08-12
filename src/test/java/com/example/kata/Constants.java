@@ -5,5 +5,6 @@ package com.example.kata;
  */
 public class Constants {
     public static final Long DEPOSIT_AMMOUNT = 100L;
+    public static final Long WITHDRAWAL_AMMOUNT = 50L;
     public static final String ACCOUNT_NUMBER = "123456789";
 }
