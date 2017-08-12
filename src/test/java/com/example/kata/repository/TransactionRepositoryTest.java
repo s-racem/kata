@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Created by sracem on 12/08/2017.
  */
@@ -45,6 +47,9 @@ public class TransactionRepositoryTest {
                 .date(new Date())
                 .account(account)
                 .build();
-        transactionRepository.saveAndFlush(depositTransaction);
+        Transaction result = transactionRepository.saveAndFlush(depositTransaction);
+        assertThat(result)
+                .isNotNull()
+                .isEqualToComparingFieldByField(depositTransaction);
     }
 }
