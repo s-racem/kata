@@ -5,6 +5,7 @@ import com.example.kata.domain.enums.TransactionType;
 import com.example.kata.domain.models.Account;
 import com.example.kata.domain.models.Transaction;
 import com.example.kata.exception.KanaException;
+import com.example.kata.repository.AccountRepository;
 import com.example.kata.repository.TransactionRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,8 @@ public class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+    @Mock
+    private AccountRepository accountRepository;
 
     private Account account;
 
@@ -50,6 +53,7 @@ public class TransactionServiceTest {
                 .account(account)
                 .build();
         doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
+        doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
         Transaction result = transactionService.addTransaction(depositTransaction);
         assertThat(result).isEqualToComparingFieldByField(depositTransaction);
     }
@@ -66,9 +70,7 @@ public class TransactionServiceTest {
                 .account(newAccount)
                 .build();
         doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
-        Transaction result = transactionService.addTransaction(depositTransaction);
-        assertThat(result).isEqualToComparingFieldByField(depositTransaction);
-
+        doReturn(null).when(accountRepository).findByNumber(Constants.NEW_ACCOUNT_NUMBER);
         assertThatThrownBy(() -> transactionService.addTransaction(depositTransaction))
                 .isInstanceOf(KanaException.class);
     }

@@ -17,7 +17,7 @@ public class TransactionService {
     TransactionRepository transactionRepository;
     @Autowired
     AccountRepository accountRepository;
-    public Transaction addTransaction(Transaction transaction) {
+    public Transaction addTransaction(Transaction transaction) throws KanaException{
         Account account = transaction.getAccount();
         if (accountRepository.findByNumber(account.getNumber()) == null) {
             throw new KanaException("Failed transaction: account not exist");
