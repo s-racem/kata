@@ -1,6 +1,9 @@
 package com.example.kata.service;
 
+import com.example.kata.domain.models.Account;
 import com.example.kata.domain.models.Transaction;
+import com.example.kata.exception.KanaException;
+import com.example.kata.repository.AccountRepository;
 import com.example.kata.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +15,13 @@ import org.springframework.stereotype.Service;
 public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
-    
+    @Autowired
+    AccountRepository accountRepository;
     public Transaction addTransaction(Transaction transaction) {
+        Account account = transaction.getAccount();
+        if (accountRepository.findByNumber(account.getNumber()) == null) {
+            throw new KanaException("Failed transaction: account not exist");
+        }
         return transactionRepository.save(transaction);
     }
 }

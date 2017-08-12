@@ -4,6 +4,7 @@ import com.example.kata.Constants;
 import com.example.kata.domain.enums.TransactionType;
 import com.example.kata.domain.models.Account;
 import com.example.kata.domain.models.Transaction;
+import com.example.kata.exception.KanaException;
 import com.example.kata.repository.TransactionRepository;
 import org.junit.Before;
 import org.junit.Test;
