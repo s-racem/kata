@@ -24,5 +24,6 @@ public class TransactionRepositoryTest {
                 .date(new Date())
                 .account(account)
                 .build();
+        transactionRepository.saveAndFlush(depositTransaction);
     }
 }
