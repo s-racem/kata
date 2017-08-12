@@ -36,22 +36,23 @@ public class TransactionServiceTest {
     private AccountRepository accountRepository;
 
     private Account account;
+    private Transaction depositTransaction;
 
     @Before
     public void init() {
         account = Account.builder()
                 .number(Constants.ACCOUNT_NUMBER)
                 .build();
-    }
-
-    @Test
-    public void should_add_deposit_transaction() throws Exception {
-        Transaction depositTransaction = Transaction.builder()
+        depositTransaction = Transaction.builder()
                 .amount(Constants.DEPOSIT_AMMOUNT)
                 .transactionType(TransactionType.DEPOSIT)
                 .date(new Date())
                 .account(account)
                 .build();
+    }
+
+    @Test
+    public void should_add_deposit_transaction() throws Exception {
         doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
         doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
         Transaction result = transactionService.addTransaction(depositTransaction);
@@ -63,15 +64,15 @@ public class TransactionServiceTest {
         Account newAccount = Account.builder()
                 .number(Constants.NEW_ACCOUNT_NUMBER)
                 .build();
-        Transaction depositTransaction = Transaction.builder()
+        Transaction newDepositTransaction = Transaction.builder()
                 .amount(Constants.DEPOSIT_AMMOUNT)
                 .transactionType(TransactionType.DEPOSIT)
                 .date(new Date())
                 .account(newAccount)
                 .build();
-        doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
+        doReturn(newDepositTransaction).when(transactionRepository).save(newDepositTransaction);
         doReturn(null).when(accountRepository).findByNumber(Constants.NEW_ACCOUNT_NUMBER);
-        assertThatThrownBy(() -> transactionService.addTransaction(depositTransaction))
+        assertThatThrownBy(() -> transactionService.addTransaction(newDepositTransaction))
                 .isInstanceOf(KanaException.class);
     }
 
@@ -85,6 +86,7 @@ public class TransactionServiceTest {
                 .build();
         doReturn(withdrawalTransaction).when(transactionRepository).save(withdrawalTransaction);
         doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
+        doReturn(Constants.DEPOSIT_AMMOUNT).when(transactionRepository).calculateAccountBalance(account);
         Transaction result = transactionService.addTransaction(withdrawalTransaction);
         assertThat(result).isEqualToComparingFieldByField(withdrawalTransaction);
     }
@@ -99,6 +101,7 @@ public class TransactionServiceTest {
                 .build();
         doReturn(withdrawalTransaction).when(transactionRepository).save(withdrawalTransaction);
         doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
+        doReturn(Constants.DEPOSIT_AMMOUNT).when(transactionRepository).calculateAccountBalance(account);
         assertThatThrownBy(() -> transactionService.addTransaction(withdrawalTransaction))
                 .isInstanceOf(KanaException.class);
     }
