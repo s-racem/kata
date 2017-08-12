@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 /**
@@ -50,6 +51,24 @@ public class TransactionServiceTest {
         doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
         Transaction result = transactionService.addTransaction(depositTransaction);
         assertThat(result).isEqualToComparingFieldByField(depositTransaction);
+    }
 
+    @Test
+    public void should_not_add_transaction_when_not_found_account() {
+        Account newAccount = Account.builder()
+                .number(Constants.NEW_ACCOUNT_NUMBER)
+                .build();
+        Transaction depositTransaction = Transaction.builder()
+                .amount(Constants.DEPOSIT_AMMOUNT)
+                .transactionType(TransactionType.DEPOSIT)
+                .date(new Date())
+                .account(newAccount)
+                .build();
+        doReturn(depositTransaction).when(transactionRepository).save(depositTransaction);
+        Transaction result = transactionService.addTransaction(depositTransaction);
+        assertThat(result).isEqualToComparingFieldByField(depositTransaction);
+
+        assertThatThrownBy(() -> transactionService.addTransaction(depositTransaction))
+                .isInstanceOf(KanaException.class);
     }
 }
