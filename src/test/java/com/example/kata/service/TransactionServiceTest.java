@@ -74,4 +74,18 @@ public class TransactionServiceTest {
         assertThatThrownBy(() -> transactionService.addTransaction(depositTransaction))
                 .isInstanceOf(KanaException.class);
     }
+
+    @Test
+    public void should_add_withdrawal_transaction() throws Exception {
+        Transaction withdrawalTransaction = Transaction.builder()
+                .amount(Constants.WITHDRAWAL_AMMOUNT)
+                .transactionType(TransactionType.WITHDRAWAL)
+                .date(new Date())
+                .account(account)
+                .build();
+        doReturn(withdrawalTransaction).when(transactionRepository).save(withdrawalTransaction);
+        doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
+        Transaction result = transactionService.addTransaction(withdrawalTransaction);
+        assertThat(result).isEqualToComparingFieldByField(withdrawalTransaction);
+    }
 }
