@@ -1,6 +1,7 @@
 package com.example.kata.repository;
 
 import com.example.kata.Constants;
+import com.example.kata.domain.models.Transaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
