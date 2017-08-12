@@ -67,4 +67,10 @@ public class TransactionRepositoryTest {
                 .isNotNull()
                 .isEqualToComparingFieldByField(depositTransaction);
     }
+
+    @Test
+    public void should_get_all_of_history() throws Exception {
+        transactionRepository.findByAccount(expectedAccount);
+
+    }
 }
