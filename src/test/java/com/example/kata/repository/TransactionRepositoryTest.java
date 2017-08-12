@@ -52,4 +52,19 @@ public class TransactionRepositoryTest {
                 .isNotNull()
                 .isEqualToComparingFieldByField(depositTransaction);
     }
+
+    @Test
+    public void should_make_withdrawal_transaction() throws Exception {
+
+        Transaction depositTransaction = Transaction.builder()
+                .amount(Constants.DEPOSIT_AMMOUNT)
+                .transactionType(TransactionType.WITHDRAWAL)
+                .date(new Date())
+                .account(account)
+                .build();
+        Transaction result = transactionRepository.saveAndFlush(depositTransaction);
+        assertThat(result)
+                .isNotNull()
+                .isEqualToComparingFieldByField(depositTransaction);
+    }
 }
