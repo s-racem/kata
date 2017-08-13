@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class TransactionServiceTest {
 
     private Account account;
     private Transaction depositTransaction;
+    private List<Transaction> transactions;
 
     @Before
     public void init() {
@@ -50,6 +52,8 @@ public class TransactionServiceTest {
                 .date(new Date())
                 .account(account)
                 .build();
+        transactions = new ArrayList<>();
+        transactions.add(depositTransaction);
     }
 
     @Test
@@ -109,7 +113,7 @@ public class TransactionServiceTest {
 
     @Test
     public void should_fetch_all_transactions_by_account() throws Exception {
-        doReturn(depositTransaction).when(transactionRepository).findByAccount(account);
+        doReturn(transactions).when(transactionRepository).findByAccount(account);
         doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
         List<Transaction> result = transactionService.findByAccount(account);
         assertThat(result).isNotNull().isNotEmpty().hasSize(1).containsExactly(depositTransaction);
