@@ -1,7 +1,9 @@
 package com.example.kata.domain.models;
 
 import com.example.kata.domain.enums.TransactionType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "TRANSACTION")
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class Transaction {
 
     @Id
