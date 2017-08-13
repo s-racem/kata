@@ -118,4 +118,14 @@ public class TransactionServiceTest {
         List<Transaction> result = transactionService.findByAccount(account);
         assertThat(result).isNotNull().isNotEmpty().hasSize(1).containsExactly(depositTransaction);
     }
+
+    @Test
+    public void should_return_exception_when_fetch_transactions_by_nonexistent_account() throws Exception {
+        doReturn(null).when(accountRepository).findByNumber(Constants.NEW_ACCOUNT_NUMBER);
+        Account newAccount = Account.builder()
+                .number(Constants.NEW_ACCOUNT_NUMBER)
+                .build();
+        assertThatThrownBy(() -> transactionService.findByAccount(newAccount))
+                .isInstanceOf(KanaException.class);
+    }
 }
