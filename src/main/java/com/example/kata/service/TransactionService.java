@@ -9,6 +9,8 @@ import com.example.kata.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by sracem on 12/08/2017.
  */
@@ -31,5 +33,9 @@ public class TransactionService {
             transaction.setAmount(transaction.getAmount()* -1);
         }
         return transactionRepository.save(transaction);
+    }
+
+    public List<Transaction> findByAccount(Account account) {
+        return transactionRepository.findByAccount(account);
     }
 }
