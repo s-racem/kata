@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -104,5 +105,13 @@ public class TransactionServiceTest {
         doReturn(Constants.DEPOSIT_AMMOUNT).when(transactionRepository).calculateAccountBalance(account);
         assertThatThrownBy(() -> transactionService.addTransaction(withdrawalTransaction))
                 .isInstanceOf(KanaException.class);
+    }
+
+    @Test
+    public void should_fetch_all_transactions_by_account() throws Exception {
+        doReturn(depositTransaction).when(transactionRepository).findByAccount(account);
+        doReturn(account).when(accountRepository).findByNumber(Constants.ACCOUNT_NUMBER);
+        List<Transaction> result = transactionService.findByAccount(account);
+        assertThat(result).isNotNull().isNotEmpty().hasSize(1).containsExactly(depositTransaction);
     }
 }
