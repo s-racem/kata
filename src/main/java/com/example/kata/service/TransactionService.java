@@ -36,6 +36,9 @@ public class TransactionService {
     }
 
     public List<Transaction> findByAccount(Account account) {
+        if (accountRepository.findByNumber(account.getNumber()) == null) {
+            throw new KanaException("Failed transaction: account not exist");
+        }
         return transactionRepository.findByAccount(account);
     }
 }
