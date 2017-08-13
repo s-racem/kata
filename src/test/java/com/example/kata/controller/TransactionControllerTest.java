@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -72,10 +72,9 @@ public class TransactionControllerTest {
     @Test
     public void should_get_all_transactions_by_account() throws Exception {
         doReturn(transactions).when(transactionService).findByAccount(account);
-        mockMvc.perform(post("/api/findByAccount")
+        mockMvc.perform(get("/api/findByAccount")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapper.writeValueAsString(depositTransaction)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(transactions)));
+                .andExpect(status().isOk());
     }
 }

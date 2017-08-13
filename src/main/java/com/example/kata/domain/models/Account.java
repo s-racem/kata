@@ -1,6 +1,8 @@
 package com.example.kata.domain.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "ACCOUNT")
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class Account {
     @Id
     @GeneratedValue
