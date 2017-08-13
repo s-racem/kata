@@ -5,9 +5,11 @@ import com.example.kata.domain.enums.TransactionType;
 import com.example.kata.domain.models.Account;
 import com.example.kata.domain.models.Transaction;
 import com.example.kata.service.TransactionService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,13 +26,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by sracem on 13/08/2017.
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(TrasactionController.class)
+@WebMvcTest(TransactionController.class)
 public class TransactionControllerTest {
 
     @MockBean
     TransactionService transactionService;
 
+    @Autowired
     private MockMvc mockMvc;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     private Account account;
     private Transaction depositTransaction;
@@ -54,7 +59,7 @@ public class TransactionControllerTest {
         doReturn(depositTransaction).when(transactionService).addTransaction(depositTransaction);
         mockMvc.perform(post("/api/addTransaction")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .sessionAttr("transactopn", depositTransaction))
+                .content(mapper.writeValueAsString(depositTransaction)))
                 .andExpect(status().isOk());
     }
 }
